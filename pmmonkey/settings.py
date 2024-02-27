@@ -29,7 +29,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
+# step 1 ython manage.py startapp my_app， step2 add my_app 配置
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'pm',
     'myapp.apps.MyappConfig'
 ]
 
@@ -99,6 +100,33 @@ DATABASES = {
     }
 }
 
+# log conf
+LOGGING = {
+    'version': 1,
+    'formatters': {
+        'verbose': {
+            'format': '{asctime} - {name} - {levelname} - {message}',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,  # Allow child loggers to inherit configuration
+        },
+        'pm': {  # Your custom app's logger
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 

@@ -26,6 +26,19 @@ class ProjectInfo(models.Model):
     startup = models.DateTimeField(db_column= '项目启动时间')
     deadline = models.DateTimeField(db_column='结束时间')
 
+    def addPM(self, pmInfo):
+        self.businessLine = pmInfo.businessLine
+        self.description = pmInfo.description
+        self.ower = pmInfo.ower
+        self.progress = pmInfo.progress
+        self.status = pmInfo.status
+        self.type = pmInfo.type
+        # self.projectId = pmInfo.projectId
+        self.startup = pmInfo.startup
+        self.deadline = pmInfo.deadline
+
+        self.save()
+
 #执行变更
 class rojectLog(models.Model):
     logInfo = models.CharField(max_length=255, db_column='跟进信息')
