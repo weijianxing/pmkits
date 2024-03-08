@@ -14,6 +14,10 @@ from django.db import models
 from django.db.models import F
 
 from datetime import datetime
+
+from django.utils import timezone
+
+
 class User(models.Model):
     role = models.CharField(max_length=128, help_text='前端开发，后端开发，测试，产品经理，项目经理')
     type = models.IntegerField(help_text='1，数科驻场，2，数科本部，3易大宗')
@@ -34,7 +38,7 @@ class ProjectInfo(models.Model):
     deadline = models.DateTimeField(help_text='结束时间')
     parentId = models.IntegerField(help_text='所属父节点', default=0)
     PRDLink = models.CharField(max_length=255, help_text='项目prd link', default='')
-    createTime = models.DateTimeField(help_text= '项目创建时间', default=datetime.now())
+    createTime = models.DateTimeField(help_text= '项目创建时间', default=timezone.now)
 
 
 

@@ -1,7 +1,7 @@
 import json
 import logging
 
-
+from django.core import serializers
 from django.db.models import F
 from django.shortcuts import render, get_object_or_404
 from django.db.models import OrderBy
@@ -51,11 +51,15 @@ def update_satus(request):
     # q.save()
 
 def get_projects(request):
-    request_data = request.body.decode('utf-8')
-    if request_data == "":
-        #response top 30 project:
-        infos = ProjectInfo.objects.order_by('-createTime')[:20]
-        logger.info( infos)
+    # request_data = request.body.decode('utf-8')
+    infos = ProjectInfo.objects.order_by('-createTime')[:20]
+    # logger.info("项目个数： ")
+    # for data in infos:
+    #     logger.info(serializers.serialize('json', [data]))
+
+    infos_json = serializers.serialize('json', infos)
+    logger.info(infos_json)
+    return JsonResponse(infos_json, status=200,safe=False)
 
 
 
