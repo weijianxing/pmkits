@@ -1,8 +1,10 @@
+import json
 import logging
 
-from django.core.serializers import json
+
 from django.db.models import F
 from django.shortcuts import render, get_object_or_404
+from django.db.models import OrderBy
 
 # Create your views here.
 from django.utils import timezone
@@ -22,13 +24,14 @@ def add(request):
     # print(request.body)
     logger.info("**************************-----add a new project.")
 
-    logger.info(request.body)
+
     resp = {"status":000,"message":'项目创建成功'}
     if request.method == 'POST':
         try:
             request_data = request.body.decode('utf-8')
+            # logger.info("request.body:" + request_data)
             logger.info('添加项目信息')
-            logger.debug(request_data)
+            logger.info(request_data)
             pm = ProjectInfo()
 
 
@@ -46,3 +49,13 @@ def update_satus(request):
     # q = get_object_or_404(ProjectInfo, pk=request.id)
     # q.status = request.status
     # q.save()
+
+def get_projects(request):
+    request_data = request.body.decode('utf-8')
+    if request_data == "":
+        #response top 30 project:
+        infos = ProjectInfo.objects.order_by('-createTime')[:20]
+        logger.info( infos)
+
+
+

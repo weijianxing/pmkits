@@ -45,7 +45,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -101,32 +101,211 @@ DATABASES = {
 }
 
 # log conf
+# LOGGING_DIR, = os.path.join(BASE_DIR, 'slogs')
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'formatters': {
+#         'standard': {
+#             'format': '[%(asctime)s][%(threadName)s:%(thread)d][task_id:%(name)s][%(levelname)s]'
+#                       '[%(filename)s:%(lineno)d][%(message)s]',
+#             'datefmt':'%Y-%m-%d %H:%M:%S'
+#         },
+#         'simple': {
+#             'format': '[%(levelname)s][%(asctime)s][%(filename)s:%(lineno)d]%(message)s'
+#         },
+#     },
+#     'handlers': {
+#         # 'console': {
+#         #     'class': 'logging.StreamHandler',
+#         #     'formatter': 'console',
+#         # },
+# # 默认的
+#         'default': {
+#             'level': 'INFO',
+#             'class': 'logging.handlers.RotatingFileHandler',  # 保存到文件，自动切
+#             'filename': os.path.join(BASE_LOG_DIR, "sandbox_info.log"),  # 日志文件
+#             'maxBytes': 1024 * 1024 * 50,  # 日志大小50M
+#             'backupCount': 3,  # 最多备份3个日志文件
+#             'formatter': 'simple',
+#             'encoding': 'utf-8',
+#         },
+#         # 用来记错误日志
+#         'error': {
+#             'level': 'ERROR',
+#             'class': 'logging.handlers.RotatingFileHandler',  # 保存到文件，自动切割日志文件
+#             'filename': os.path.join(BASE_LOG_DIR, "sandbox_err.log"),  # 日志文件
+#             'maxBytes': 1024 * 1024 * 50,  # 日志大小50M
+#             'backupCount': 5,
+#             'formatter': 'standard',
+#             'encoding': 'utf-8',
+#         }
+#
+#     },
+#     'loggers': {
+#         # 'django': {
+#         #     'handlers': ['console', 'fileHandler'],
+#         #     'level': 'DEBUG',
+#         #     'propagate': True,  # Allow child loggers to inherit configuration
+#         # },
+#         # 名为sandbox_info的logger
+#         'sandbox_info': {
+#             'handlers': ['default'],  # 使用defaul handler
+#             'level': 'DEBUG',
+#             'propagate': True,  # 向不向更高级别的logger传递
+#         },
+#         # 名为 'sandbox_error'的logger
+#         'sandbox_error': {
+#             'handlers': ['error'],
+#             'level': 'ERROR',
+#         }
+#         # 'pm': {  # Your custom app's logger
+#         #     'handlers': ['console'],
+#         #     'level': 'INFO',
+#         # },
+#     },
+# }
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,  # 禁用已经存在的logger实例
+#     # 日志文件的格式
+#     'formatters': {
+#         # 详细的日志格式
+#         'standard': {
+#             'format': '[%(asctime)s][%(threadName)s:%(thread)d][task_id:%(name)s][%(levelname)s][%(filename)s:%(lineno)d][%(message)s]'
+#         },
+#         # 简单的日志格式
+#         'simple': {
+#             'format': '[%(levelname)s][%(asctime)s][%(filename)s:%(lineno)d]%(message)s'
+#         },
+#
+#     },
+#     # 处理器
+#     'handlers': {
+#         # 默认的
+#         'simple': {
+#             'level': 'INFO',
+#             'class': 'logging.handlers.RotatingFileHandler',  # 保存到文件，自动切
+#             'filename': os.path.join(BASE_LOG_DIR, "sandbox_info.log"),  # 日志文件
+#             'maxBytes': 1024 * 1024 * 50,  # 日志大小50M
+#             'backupCount': 3,  # 最多备份3个日志文件
+#             'formatter': 'simple',
+#             'encoding': 'utf-8',
+#         },
+#         # 用来记错误日志
+#         # 'error': {
+#         #     'level': 'ERROR',
+#         #     'class': 'logging.handlers.RotatingFileHandler',  # 保存到文件，自动切割日志文件
+#         #     'filename': os.path.join(BASE_LOG_DIR, "sandbox_err.log"),  # 日志文件
+#         #     'maxBytes': 1024 * 1024 * 50,  # 日志大小50M
+#         #     'backupCount': 5,
+#         #     'formatter': 'standard',
+#         #     'encoding': 'utf-8',
+#         # }
+#
+#     },
+#         'loggers': {
+#             # 名为sandbox_info的logger
+#             'sandbox_info': {
+#                 'handlers': ['simple'],  # 使用defaul handler
+#                 'level': 'INFO',
+#                 'propagate': True,  # 向不向更高级别的logger传递
+#             },
+#             # 名为 'sandbox_error'的logger
+#             # 'sandbox_error': {
+#             #             #     'handlers': ['error'],
+#             #             #     'level': 'ERROR',
+#             #             # }
+#     }
+#
+# }
+
+#
 LOGGING = {
     'version': 1,
+    'disable_existing_loggers': False,  # Optional, avoid overriding default loggers
+
     'formatters': {
-        'verbose': {
-            'format': '{asctime} - {name} - {levelname} - {message}',
-        },
+        'simple': {
+            'format': '[%(asctime)s][%(levelname)s][%(filename)s:%(lineno)d][%(message)s]'
+        }
     },
+
     'handlers': {
         'console': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
+            'formatter': 'simple',
         },
+'       simple': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        }
     },
+
     'loggers': {
         'django': {
             'handlers': ['console'],
             'level': 'INFO',
-            'propagate': True,  # Allow child loggers to inherit configuration
-        },
-        'pm': {  # Your custom app's logger
-            'handlers': ['console'],
-            'level': 'DEBUG',
+            'propagate': True,  # Optional, allows child loggers to inherit settings
         },
     },
 }
+
+
+#
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'formatters': {
+#         'standard': {
+#             'format': '[%(levelname)s][%(asctime)s][%(filename)s][%(funcName)s][%(lineno)d] > %(message)s'
+#         },
+#         'simple': {
+#             'format': '[%(levelname)s]> %(message)s',
+#             'datefmt': '%Y-%m-%d %H:%M:%S'
+#         },
+#     },
+#     'filters': {
+#         'require_debug_true': {
+#             '()': 'django.utils.log.RequireDebugTrue',
+#         },
+#     },
+#     'handlers': {
+#         'console': {
+#             'level': 'DEBUG',
+#             'filters': ['require_debug_true'],
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'simple'
+#         },
+#         'file_handler': {
+#              'level': 'INFO',
+#              'class': 'logging.handlers.TimedRotatingFileHandler',
+#              'filename': '%s/django.log' % LOGGING_DIR,
+#              'formatter':'standard',
+#              'encoding': 'utf-8'
+#         }, # 用于文件输出
+#         'mail_admins': {
+#             'level': 'ERROR',
+#             'class': 'django.utils.log.AdminEmailHandler',
+#              'formatter':'standard'
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             # 一个记录器中可以使用多个处理器
+#             'handlers': ['console','file_handler'],
+#             'level':'DEBUG',
+#             'propagate': True,
+#         },
+#         'django.request': {
+#             'handlers': ['mail_admins'],
+#             'level': 'ERROR',
+#             'propagate': False,
+#         },
+#     }
+# }
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 

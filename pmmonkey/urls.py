@@ -18,9 +18,12 @@ from django.contrib import admin
 from django.urls import path, include
 # from .views import *
 from pmmonkey import views
+from pm import views as pmviews
 
 urlpatterns = [
     path('index/', views.index),
+    path('pm/add', pmviews.add),
+    path('pm/allProject', pmviews.get_projects),
 #     path('', index),
 #     path('myapp/', include('myapp.urls, {"id": 1}'))
 ]
