@@ -51,7 +51,7 @@ def update_satus(request):
     # q.save()
 
 def get_projects(request):
-    # request_data = request.body.decode('utf-8')
+    #使用order by 过滤条件
     infos = ProjectInfo.objects.order_by('-createTime')[:20]
     # logger.info("项目个数： ")
     # for data in infos:
