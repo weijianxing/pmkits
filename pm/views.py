@@ -1,3 +1,4 @@
+import datetime
 import json
 import logging
 
@@ -10,7 +11,7 @@ from django.db.models import OrderBy
 from django.utils import timezone
 
 from myapp.models import Question
-from pm.models import ProjectInfo
+from pm.models import ProjectInfo, User
 from pmmonkey.entities.models import *
 from django.http.response import HttpResponse, JsonResponse
 from django.conf import  settings
@@ -50,14 +51,43 @@ def update_satus(request):
     # q.status = request.status
     # q.save()
 
+def getDuration( start: datetime, end: datetime):
+    # Get timestamps in seconds
+    timestamp_1 = start.timestamp()
+    timestamp_2 = end.timestamp()
+
+    # Calculate the difference in seconds
+    time_difference = timestamp_2 - timestamp_1
+
+    # Convert to milliseconds
+    millisecond_difference = int(time_difference * 1000)
+    return millisecond_difference
+
 def get_projects(request):
     #使用order by 过滤条件
-    infos = ProjectInfo.objects.order_by('-createTime')[:20]
+    info_projects  = ProjectInfo.objects.order_by('-createTime')[:20]
     # logger.info("项目个数： ")
     # for data in infos:
     #     logger.info(serializers.serialize('json', [data]))
+    tasks = []
+    for info in info_projects:
+        task = {}
+        task["id"] = info.id
+        print("task id : ", info.id)
+        task["label"] = info.description
+        user = User.objects.filter(pk=info.ower).first()
+        task["parentId"] = info.parentId
+        task["user"] = user.name
 
-    infos_json = serializers.serialize('json', infos)
+        task["start"] = info.startup
+        task["duration"] = getDuration(info.startup, info.deadline)
+        task["percent"] = info.progress
+        task["type"] = info.type
+        tasks.append(task)
+
+    #print(task)
+    # infos_json = serializers.serialize('json', tasks,safe=False)
+    infos_json = json.dumps(tasks,default=str, ensure_ascii=False)
     logger.info(infos_json)
     return JsonResponse(infos_json, status=200,safe=False)
 
